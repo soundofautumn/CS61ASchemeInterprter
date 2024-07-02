@@ -152,7 +152,12 @@ class BuiltinProcedure(Procedure):
             python_args.append(args.first)
             args = args.rest
         # BEGIN PROBLEM 3
-        "*** YOUR CODE HERE ***"
+        if self.use_env:
+            python_args.append(env)
+        try:
+            return self.fn(*python_args)
+        except TypeError as e:
+            raise SchemeError(e)
         # END PROBLEM 3
 
 
