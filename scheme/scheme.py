@@ -118,7 +118,11 @@ class Frame(object):
         <{a: 1, b: 2, c: 3} -> <Global Frame>>
         """
         # BEGIN PROBLEM 10
-        "*** YOUR CODE HERE ***"
+        new_frame = Frame(self)
+        while formals is not nil and vals is not nil:
+            new_frame.define(formals.first, vals.first)
+            formals, vals = formals.rest, vals.rest
+        return new_frame
         # END PROBLEM 10
 
 
