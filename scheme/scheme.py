@@ -287,6 +287,7 @@ def do_and_form(expressions, env):
             return exp_eval
         else:
             expressions = expressions.rest
+    return True
     # END PROBLEM 12
 
 
@@ -299,6 +300,7 @@ def do_or_form(expressions, env):
             return exp_eval
         else:
             expressions = expressions.rest
+    return False
     # END PROBLEM 12
 
 
