@@ -342,7 +342,7 @@ one-through-four
 
 (define (odd? x) (= 1 (remainder x 2)))
 (define (filter predicate sequence)
-  (cond ((null? sequence) nil)
+  (cond ((null? sequence) '())
         ((predicate (car sequence))
          (cons (car sequence)
                (filter predicate (cdr sequence))))
@@ -372,7 +372,7 @@ one-through-four
 ; expect (2 3 4 5 6 7)
 
 (define (enumerate-tree tree)
-  (cond ((null? tree) nil)
+  (cond ((null? tree) '())
         ((not (pair? tree)) (list tree))
         (else (append (enumerate-tree (car tree))
                       (enumerate-tree (cdr tree))))))
