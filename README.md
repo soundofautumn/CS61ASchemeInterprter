@@ -4,6 +4,8 @@ A Scheme interpreter written in Python with the guide of following course:
 
 [Project 4: Scheme Interpreter](https://cs.nju.edu.cn/xyfeng/teaching/SICP/projects/scheme/scheme.html)
 
+**THANKS TO [Meng-one (Yiru Liu)](https://github.com/Meng-one) FOR FINDING THIS WODNERFUL PROJECT**
+
 ## Introduction
 
 finished all the required functions and passed all the OK tests.
