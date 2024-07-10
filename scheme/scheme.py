@@ -36,6 +36,8 @@ def scheme_eval(expr, env, _=None):  # Optional third argument is ignored
         # BEGIN PROBLEM 4
         operator = scheme_eval(first, env)
         check_procedure(operator)
+        if isinstance(operator, MacroProcedure):
+            return scheme_eval(operator.apply_macro(rest, env), env)
         operands = rest.map(lambda x: scheme_eval(x, env))
         return scheme_apply(operator, operands, env)
         # END PROBLEM 4
@@ -362,7 +364,13 @@ def make_let_frame(bindings, env):
 def do_define_macro(expressions, env):
     """Evaluate a define-macro form."""
     # BEGIN Problem 20
-    "*** YOUR CODE HERE ***"
+    check_form(expressions, 2)
+    target = expressions.first
+    check_formals(target)  # check is symbol
+    check_form(target, 0)  # check is Pair
+    macro_name, formals = target.first, target.rest
+    body = expressions.rest
+    env.define(macro_name, MacroProcedure(formals, body, env))
     # END Problem 20
 
 
