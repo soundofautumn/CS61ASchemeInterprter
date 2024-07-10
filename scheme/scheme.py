@@ -63,11 +63,11 @@ def eval_all(expressions, env):
     # BEGIN PROBLEM 7
     if expressions.first == nil:
         return None
-    elif expressions.rest == nil:
-        return scheme_eval(expressions.first, env)
-    else:
+    while expressions.rest is not nil:
         scheme_eval(expressions.first, env)
-        return eval_all(expressions.rest, env)
+        expressions = expressions.rest
+    # tail call
+    return scheme_eval(expressions.first, env, True)
     # END PROBLEM 7
 
 
@@ -273,15 +273,20 @@ def do_if_form(expressions, env):
     """Evaluate an if form."""
     check_form(expressions, 2, 3)
     if scheme_truep(scheme_eval(expressions.first, env)):
-        return scheme_eval(expressions.rest.first, env)
+        # tail call
+        return scheme_eval(expressions.rest.first, env, True)
     elif len(expressions) == 3:
-        return scheme_eval(expressions.rest.rest.first, env)
+        # tail call
+        return scheme_eval(expressions.rest.rest.first, env, True)
 
 
 def do_and_form(expressions, env):
     """Evaluate a (short-circuited) and form."""
     # BEGIN PROBLEM 12
     while expressions is not nil:
+        if expressions.rest is nil:
+            # tail call
+            return scheme_eval(expressions.first, env, True)
         exp_eval = scheme_eval(expressions.first, env)
         if expressions.rest is nil or scheme_falsep(exp_eval):
             return exp_eval
@@ -295,6 +300,9 @@ def do_or_form(expressions, env):
     """Evaluate a (short-circuited) or form."""
     # BEGIN PROBLEM 12
     while expressions is not nil:
+        if expressions.rest is nil:
+            # tail call
+            return scheme_eval(expressions.first, env, True)
         exp_eval = scheme_eval(expressions.first, env)
         if expressions.rest is nil or scheme_truep(exp_eval):
             return exp_eval
@@ -574,7 +582,9 @@ def optimize_tail_calls(original_scheme_eval):
 
         result = Thunk(expr, env)
         # BEGIN
-        "*** YOUR CODE HERE ***"
+        while isinstance(result, Thunk):
+            result = original_scheme_eval(result.expr, result.env)
+        return result
         # END
 
     return optimized_eval
@@ -583,7 +593,7 @@ def optimize_tail_calls(original_scheme_eval):
 ################################################################
 # Uncomment the following line to apply tail call optimization #
 ################################################################
-# scheme_eval = optimize_tail_calls(scheme_eval)
+scheme_eval = optimize_tail_calls(scheme_eval)
 
 
 ####################
